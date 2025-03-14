@@ -1,0 +1,28 @@
+@use 'sass:color';
+
+// 主题色
+$primary-color: #3498db; // 天蓝色
+$primary-light: color.adjust($primary-color, $lightness: 10%);
+$primary-dark: color.adjust($primary-color, $lightness: -10%);
+
+// 文字颜色
+$text-primary: #333333;
+$text-secondary: #666666;
+$text-light: #999999;
+
+// 背景色
+$bg-primary: #ffffff;
+$bg-secondary: #f5f5f5;
+
+// 布局
+$header-height: 64px;
+$container-width: 1200px;
+
+// 断点
+$breakpoints: (
+  'sm': 576px,
+  'md': 768px,
+  'lg': 992px,
+  'xl': 1200px,
+  'xxl': 1400px
+); 

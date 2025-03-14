@@ -21,7 +21,8 @@
       <form @submit.prevent="handleSubmit">
         <div class="form-group">
           <label>邮箱</label>
-          <input v-model="form.email" type="email" required />
+          <input v-model="form.email" type="email" required @blur="validateEmail" />
+          <span v-if="emailError" class="error">{{ emailError }}</span>
         </div>
         
         <div class="form-group">
@@ -32,6 +33,14 @@
         <div v-if="!isLogin" class="form-group">
           <label>确认密码</label>
           <input v-model="form.confirmPassword" type="password" required />
+        </div>
+
+        <div v-if="!isLogin" class="form-group verification-group">
+          <label class="verification-label">验证码:</label>
+          <div class="verification-input-container">
+            <input type="text" v-model="verificationCode" required class="verification-input" />
+            <button type="button" @click="sendVerificationCode" :disabled="isCooldown" class="btn-verification">{{ cooldownText }}</button>
+          </div>
         </div>
 
         <button type="submit" class="btn btn-primary">
@@ -51,6 +60,35 @@ const form = ref({
   password: '',
   confirmPassword: ''
 })
+
+const emailError = ref('')
+const verificationCode = ref('')
+const isCooldown = ref(false)
+const cooldownTime = ref(300) // 5分钟
+const cooldownText = ref('发送验证码')
+
+const validateEmail = () => {
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  emailError.value = emailPattern.test(form.value.email) ? '' : '请输入有效的邮箱地址'
+}
+
+const sendVerificationCode = () => {
+  if (isCooldown.value) return
+  // 发送验证码的逻辑
+  isCooldown.value = true
+  cooldownText.value = `重新发送(${cooldownTime.value / 60}秒)`
+
+  const interval = setInterval(() => {
+    cooldownTime.value -= 1
+    cooldownText.value = `重新发送(${Math.floor(cooldownTime.value / 60)}秒)`
+    if (cooldownTime.value <= 0) {
+      clearInterval(interval)
+      isCooldown.value = false
+      cooldownText.value = '发送验证码'
+      cooldownTime.value = 300 // 重置倒计时
+    }
+  }, 1000)
+}
 
 const handleSubmit = () => {
   // TODO: 对接后端API
@@ -118,9 +156,43 @@ const handleSubmit = () => {
   }
 }
 
+.verification-group {
+  display: flex;
+  align-items: center; /* 垂直居中对齐 */
+}
+
+.verification-input-container {
+  display: flex;
+  align-items: center; /* 垂直居中对齐 */
+  width: 100%; /* 使容器占满宽度 */
+}
+
+.verification-input {
+  flex: 1; /* 使输入框占据剩余空间 */
+  margin-right: 8px; /* 输入框与按钮之间的间距 */
+}
+
 .btn-primary {
   width: 100%;
   padding: 12px;
   margin-top: 16px;
+}
+
+.btn-verification {
+  padding: 8px 12px;
+  background-color: $primary-color;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: darken($primary-color, 10%);
+  }
+}
+
+.error {
+  color: red;
 }
 </style>

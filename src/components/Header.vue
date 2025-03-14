@@ -3,16 +3,16 @@
     <div class="container header-container">
       <router-link to="/" class="logo">
         <img src="@/assets/logo.svg" alt="Logo" />
-        <span>智能LOGO</span>
+        <span>Intelli dl 在线智能LOGO</span>
       </router-link>
       <nav class="nav">
         <router-link to="/" class="nav-item">首页</router-link>
         <router-link to="/ai-logo" class="nav-item">智能LOGO生成</router-link>
-        <router-link to="/vi-design" class="nav-item">VI设计生成</router-link>
+        <!-- <router-link to="/vi-design" class="nav-item">VI设计生成</router-link>
         <router-link to="/templates" class="nav-item">设计模板素材</router-link>
         <router-link to="/custom" class="nav-item">LOGO定制服务</router-link>
         <router-link to="/trademark" class="nav-item">商标注册</router-link>
-        <router-link to="/strategy" class="nav-item">设计攻略</router-link>
+        <router-link to="/strategy" class="nav-item">设计攻略</router-link> -->
       </nav>
       <div class="user-actions">
         <router-link to="/member" class="btn-text">成为会员</router-link>
@@ -70,7 +70,8 @@
 .nav {
   display: flex;
   align-items: center;
-  gap: 32px;
+  gap: 16px;
+  margin-left: 32px;
 
   &-item {
     text-decoration: none;
@@ -87,7 +88,8 @@
 .user-actions {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 8px;
+  margin-left: auto;
 
   .user-avatar {
     display: flex;
